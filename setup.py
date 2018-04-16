@@ -15,6 +15,7 @@ setup(
     author='Patrik Janoušek',
     author_email='patrikjanousek97@gmail.com',
     description='App that simplifies usage of file hosting services (currently only https://transfer.sh)',
+    long_description="I've made this app to simplify usage of file hosting services. It was primary developed for https://transfer.sh, which is scheduled to go down so this application supports simple implementation of another services in a future.",
     install_requires=['argparse', 'tqdm', 'requests'],
     packages=['pytransfer'],
     classifiers=[
