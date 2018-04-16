@@ -2,6 +2,7 @@ import argparse
 import sys
 from multiprocessing import freeze_support, Pool, Lock
 from tqdm import tqdm
+from .utils import get_service_provider_class
 
 from pytransfer.utils import upload_file
 
@@ -41,10 +42,17 @@ def main():
 
     freeze_support()
     write_lock = Lock()
-    Pool(len(args.filename), initializer=init_child, initargs=(write_lock,)).map(upload_file, files)
+    uploaded_files_links = Pool(len(args.filename), initializer=init_child, initargs=(write_lock,)).map(upload_file, files)
 
-    # Fix cursor position
-    print('\n')
+    # Fix cursor position. It isn't good solution, but it works
+    for i in range(len(args.filename) + 1):
+        print()
+
+    service_provider = get_service_provider_class()
+    try:
+        service_provider.print_post_upload_message(uploaded_files_links)
+    except AttributeError:
+        pass
 
 
 if __name__ == '__main__':

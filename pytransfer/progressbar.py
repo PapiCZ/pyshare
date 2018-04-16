@@ -10,3 +10,4 @@ class AdvancedTqdm(tqdm):
         self.fp.write('\r')  # place cursor back at the beginning of line
         self.moveto(-abs(self.pos))
         self._lock.release()
+        self.disable = True

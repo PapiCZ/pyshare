@@ -1,16 +1,18 @@
 import mimetypes
 import random
 import string
+import requests
+import re
 
 from .uploader import FileStreamUploader
-import requests
+from .settings import providers
 
 
 class TransferSh(FileStreamUploader):
     boundary: str
 
     def __init__(self, *args, **kwargs):
-        self.url = 'https://transfer.sh'
+        self.url = providers['transfer.sh']['url']
 
         super(TransferSh, self).__init__(*args, **kwargs)
 
@@ -34,3 +36,25 @@ class TransferSh(FileStreamUploader):
         })
 
         return r.text
+
+    @staticmethod
+    def parse_file_identifier_from_url(url):
+        return re.search(r'[^/]+\/[^/]+$', url).group(0)
+
+    @staticmethod
+    def parse_host_from_url(url):
+        return re.search(r'(http|https)\:\/\/[^\/]+', url).group(0)
+
+    @staticmethod
+    def print_post_upload_message(uploaded_files):
+        file_identifiers = []
+
+        for url in uploaded_files:
+            file_identifiers.append(TransferSh.parse_file_identifier_from_url(url))
+
+        base_url = TransferSh.parse_host_from_url(uploaded_files[0]) + '/'
+
+        base_archive_url = base_url + '(' + ','.join([fragment for fragment in file_identifiers]) + ')'
+        print('ZIP:', base_archive_url + '.zip')
+        print()
+        print('TAR.GZ:', base_archive_url + '.tar.gz')
