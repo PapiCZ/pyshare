@@ -47,14 +47,14 @@ class TransferSh(FileStreamUploader):
 
     @staticmethod
     def print_post_upload_message(uploaded_files):
-        file_identifiers = []
+        if len(uploaded_files) > 1:
+            file_identifiers = []
+            for url in uploaded_files:
+                file_identifiers.append(TransferSh.parse_file_identifier_from_url(url))
 
-        for url in uploaded_files:
-            file_identifiers.append(TransferSh.parse_file_identifier_from_url(url))
+            base_url = TransferSh.parse_host_from_url(uploaded_files[0]) + '/'
 
-        base_url = TransferSh.parse_host_from_url(uploaded_files[0]) + '/'
-
-        base_archive_url = base_url + '(' + ','.join([fragment for fragment in file_identifiers]) + ')'
-        print('ZIP:', base_archive_url + '.zip')
-        print()
-        print('TAR.GZ:', base_archive_url + '.tar.gz')
+            base_archive_url = base_url + '(' + ','.join([fragment for fragment in file_identifiers]) + ')'
+            print('ZIP:', base_archive_url + '.zip')
+            print()
+            print('TAR.GZ:', base_archive_url + '.tar.gz')
