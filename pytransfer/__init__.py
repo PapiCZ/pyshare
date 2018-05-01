@@ -8,7 +8,7 @@
           __/ |
          |___/
 
-Created by Patrik Janoušek <patrikjanousek97@gmail.com>
+Created by Patrik Janousek <patrikjanousek97@gmail.com>
 """
 
-__version__ = '0.1.2'
+__version__ = '0.1.3'

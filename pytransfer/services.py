@@ -20,7 +20,7 @@ class TransferSh(FileStreamUploader):
         self.boundary = ''.join(random.choice(string.digits + string.ascii_letters) for i in range(30))
         start = bytes('--' + self.boundary + '\r\n', 'utf-8')
         start += bytes('Content-Disposition: form-data; name="file"; filename="' + self.filename + '"' + '\r\n', 'utf-8')
-        start += bytes('Content-Type: ' + str(mimetypes.guess_type(self.filename)) + '\r\n', 'utf-8')
+        start += bytes('Content-Type: ' + str(mimetypes.guess_type(self.filename)[0]) + '\r\n', 'utf-8')
         start += bytes('\r\n', 'utf-8')
         self.queue.append(start)
 
